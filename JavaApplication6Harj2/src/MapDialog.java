@@ -1,4 +1,4 @@
-    // Kartankatseluohjelman graafinen käyttöliittymä
+    // Kartankatseluohjelman graafinen kï¿½yttï¿½liittymï¿½
      
     import javax.swing.*;
     import javax.swing.event.*;
@@ -8,12 +8,12 @@
      
     public class MapDialog extends JFrame {
      
-      // Käyttöliittymän komponentit
+      // Kï¿½yttï¿½liittymï¿½n komponentit
      
       private JLabel imageLabel = new JLabel();
       private JPanel leftPanel = new JPanel();
      
-      private JButton refreshB = new JButton("Päivitä");
+      private JButton refreshB = new JButton("Pï¿½ivitï¿½");
       private JButton leftB = new JButton("<");
       private JButton rightB = new JButton(">");
       private JButton upB = new JButton("^");
@@ -23,13 +23,13 @@
      
       public MapDialog() throws Exception {
      
-        // Valmistele ikkuna ja lisää siihen komponentit
+        // Valmistele ikkuna ja lisï¿½ï¿½ siihen komponentit
      
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
      
-        // ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI ALOITUSNÄKYMÄN
-        // LATAAVALLA RIVILLÄ
+        // ALLA OLEVAN TESTIRIVIN VOI KORVATA JOLLAKIN MUULLA ERI ALOITUSNï¿½KYMï¿½N
+        // LATAAVALLA RIVILLï¿½
         imageLabel.setIcon(new ImageIcon(new URL("http://demo.mapserver.org/cgi-bin/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&BBOX=-180,-90,180,90&SRS=EPSG:4326&WIDTH=953&HEIGHT=480&LAYERS=bluemarble,cities&STYLES=&FORMAT=image/png&TRANSPARENT=true")));
      
         add(imageLabel, BorderLayout.EAST);
@@ -43,12 +43,13 @@
         zoomInB.addActionListener(bl);
         zoomOutB.addActionListener(bl);
      
+        // foo
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         leftPanel.setMaximumSize(new Dimension(100, 600));
      
         // TODO:
-        // ALLA OLEVIEN KOLMEN TESTIRIVIN TILALLE SILMUKKA JOKA LISÄÄ KÄYTTÖLIITTYMÄÄN
+        // ALLA OLEVIEN KOLMEN TESTIRIVIN TILALLE SILMUKKA JOKA LISï¿½ï¿½ Kï¿½YTTï¿½LIITTYMï¿½ï¿½N
         // KAIKKIEN XML-DATASTA HAETTUJEN KERROSTEN VALINTALAATIKOT MALLIN MUKAAN
         leftPanel.add(new LayerCheckBox("bluemarble", "Maapallo", true));
         leftPanel.add(new LayerCheckBox("cities", "Kaupungit", false));
@@ -74,7 +75,7 @@
       }
      
       // Kontrollinappien kuuntelija
-      // KAIKKIEN NAPPIEN YHTEYDESSÄ VOINEE HYÖDYNTÄÄ updateImage()-METODIA
+      // KAIKKIEN NAPPIEN YHTEYDESSï¿½ VOINEE HYï¿½DYNTï¿½ï¿½ updateImage()-METODIA
       private class ButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
           if(e.getSource() == refreshB) {
@@ -83,32 +84,32 @@
           if(e.getSource() == leftB) {
             // TODO:
             // VASEMMALLE SIIRTYMINEN KARTALLA
-            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ KUVA
+            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
           }
           if(e.getSource() == rightB) {
             // TODO:
             // OIKEALLE SIIRTYMINEN KARTALLA
-            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ KUVA
+            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
           }
           if(e.getSource() == upB) {
             // TODO:
-            // YLÖSPÄIN SIIRTYMINEN KARTALLA
-            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ KUVA
+            // YLï¿½SPï¿½IN SIIRTYMINEN KARTALLA
+            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
           }
           if(e.getSource() == downB) {
             // TODO:
-            // ALASPÄIN SIIRTYMINEN KARTALLA
-            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ KUVA
+            // ALASPï¿½IN SIIRTYMINEN KARTALLA
+            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
           }
           if(e.getSource() == zoomInB) {
             // TODO:
             // ZOOM IN -TOIMINTO
-            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ KUVA
+            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
           }
           if(e.getSource() == zoomOutB) {
             // TODO:
             // ZOOM OUT -TOIMINTO
-            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA PÄIVITÄ KUVA
+            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
           }
         }
       }
@@ -123,14 +124,14 @@
         public String getName() { return name; }
       }
      
-      // Tarkastetaan mitkä karttakerrokset on valittu,
-      // tehdään uudesta karttakuvasta pyyntö palvelimelle ja päivitetään kuva
+      // Tarkastetaan mitkï¿½ karttakerrokset on valittu,
+      // tehdï¿½ï¿½n uudesta karttakuvasta pyyntï¿½ palvelimelle ja pï¿½ivitetï¿½ï¿½n kuva
       public void updateImage() throws Exception {
         String s = "";
      
-        // Tutkitaan, mitkä valintalaatikot on valittu, ja
-        // kerätään s:ään pilkulla erotettu lista valittujen kerrosten
-        // nimistä (käytetään haettaessa uutta kuvaa)
+        // Tutkitaan, mitkï¿½ valintalaatikot on valittu, ja
+        // kerï¿½tï¿½ï¿½n s:ï¿½ï¿½n pilkulla erotettu lista valittujen kerrosten
+        // nimistï¿½ (kï¿½ytetï¿½ï¿½n haettaessa uutta kuvaa)
         Component[] components = leftPanel.getComponents();
         for(Component com:components) {
             if(com instanceof LayerCheckBox)
@@ -139,7 +140,7 @@
         if (s.endsWith(",")) s = s.substring(0, s.length() - 1);
      
         // TODO:
-        // getMap-KYSELYN URL-OSOITTEEN MUODOSTAMINEN JA KUVAN PÄIVITYS ERILLISESSÄ SÄIKEESSÄ
+        // getMap-KYSELYN URL-OSOITTEEN MUODOSTAMINEN JA KUVAN Pï¿½IVITYS ERILLISESSï¿½ Sï¿½IKEESSï¿½
         // imageLabel.setIcon(new ImageIcon(url));
       }
      
