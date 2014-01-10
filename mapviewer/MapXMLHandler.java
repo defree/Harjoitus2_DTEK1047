@@ -27,7 +27,7 @@ public class MapXMLHandler extends DefaultHandler {
 		if (qName.equalsIgnoreCase("layer")) {
 			rightLayer = true;			
 		}		
-		else if (qName.equalsIgnoreCase("srs")) {//Odotetaan ett‰ XML-documentissa esiintyy SRS				
+		else if (qName.equalsIgnoreCase("srs")) {//Odotetaan ett√§ XML-documentissa esiintyy SRS				
 			rightSRS = true;
 			layer = new MapLayers();
 		}

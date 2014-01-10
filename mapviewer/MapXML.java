@@ -12,11 +12,11 @@ import javax.xml.parsers.*;
 import org.xml.sax.SAXException;
 
 /**
- * Lukee XML-tiedoston osoitteesta syötetystä osoitteesta, eli tässä harjoituksessa: 
+ * Lukee XML-tiedoston osoitteesta syÃ¶tetystÃ¤ osoitteesta, eli tÃ¤ssÃ¤ harjoituksessa: 
  * http://demo.mapserver.org/cgi-bin/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities
  * 
- * Parsii XML-tiedostoston hakien siitä layer-tagin sisältä name-tagin ja title-tagin sisällöt.
- * Parsimen asetukset, määritykset jne {@link MapXMLHandler} luokassa.
+ * Parsii XML-tiedostoston hakien siitï¿½ layer-tagin sisï¿½ltï¿½ name-tagin ja title-tagin sisï¿½llï¿½t.
+ * Parsimen asetukset, mï¿½ï¿½ritykset jne {@link MapXMLHandler} luokassa.
  */
 public class MapXML {
 	

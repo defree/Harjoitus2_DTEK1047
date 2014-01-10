@@ -9,6 +9,8 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
      
 
     public class MapDialog extends JFrame {
@@ -31,11 +33,21 @@ import java.net.*;
       
       private String MapURL;
       private String[][] layerArray;
+      
+      private MapModel model;
+      private MapView  view; 
      
       public MapDialog(final String MapURL, final String[][] layerArray) throws Exception {
     	  this.MapURL = MapURL;
     	  this.layerArray = layerArray;
-  	  
+  	  this.model = new MapModel();
+          this.view = new MapView();
+          
+           //Alustetaan malli oletusarvoilla.
+           model.SetX(-180);
+           model.SetY(-90);
+           model.SetX1(180);
+           model.SetY1(90);
     	// Valmistele ikkuna ja lisï¿½ï¿½ siihen komponentit
 		     
 	      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,33 +117,124 @@ import java.net.*;
 	            // TODO:
 	            // VASEMMALLE SIIRTYMINEN KARTALLA
 	            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
+                    int increment = GetIncrement(model.GetX(),model.GetWidth());
+                    int x0 = model.GetX()-increment;
+                    int x1 = model.GetWidth()-increment;
+                    model.SetX(x0);
+                    model.SetX1(x1);  
 	          }
-	          if(e.getSource() == rightB) {
+	          if(e.getSource() == rightB)
+                  {
 	            // TODO:
 	            // OIKEALLE SIIRTYMINEN KARTALLA
 	            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
+                      int increment = GetIncrement(model.GetX(),model.GetWidth());
+                      int x0 = model.GetX()+increment;
+                      int x1 = model.GetWidth()+increment;
+                      model.SetX(x0);
+                      model.SetX1(x1);  
 	          }
 	          if(e.getSource() == upB) {
 	            // TODO:
 	            // YLï¿½SPï¿½IN SIIRTYMINEN KARTALLA
 	            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
+                      int increment = GetIncrement(model.GetY(),model.GetHeight());
+                      int y0 = model.GetY()-increment;
+                      int y1 = model.GetHeight()-increment;
+                      model.SetY(y0);
+                      model.SetY1(y1);
 	          }
 	          if(e.getSource() == downB) {
 	            // TODO:
 	            // ALASPï¿½IN SIIRTYMINEN KARTALLA
 	            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
+                      
+                      int increment = GetIncrement(model.GetY(),model.GetHeight());
+                      int y0 = model.GetY()+increment;
+                      int y1 = model.GetHeight()+increment;
+                      model.SetY(y0);
+                      model.SetY1(y1);  
 	          }
 	          if(e.getSource() == zoomInB) {
 	            // TODO:
 	            // ZOOM IN -TOIMINTO
 	            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
+                      int x0 = model.GetX();
+                      int x1 = model.GetWidth();
+                      int y0 = model.GetY();
+                      int y1 = model.GetHeight();
+                      
+                      // lasketaan laatikon uudet nurkat edellisten arvojen perusteella
+                      double x3 = 0.853553*x0 + 0.146447*x1;
+                      double y3 = 0.853553*y0 + 0.146447*y1;
+                      double x4 = 0.146447*x0 + 0.853553*x1;
+                      double y4 = 0.146447*y0 + 0.853553*y1;
+                      
+                      // Zoomauksessa tulee pieni virhe korkeussuunnassa, lasketaan virheen suuruus
+                      // kun tiedetÃ¤Ã¤n sivujen suhde. 
+                      double yError = (x4-x3)-2*(y4-y3);
+                      
+                      // Virheen suunnasta riippuen, 
+                      y3-=yError/2;
+                      y4+=yError/2;
+                      
+                      // TÃ¤mÃ¤n matalampaa kuvaa ei voi olla.
+                      if ((y4-y3) > 1)
+                      {
+                        model.SetX((int)x3);
+                        model.SetY((int)y3);
+                        model.SetX1((int)x4);
+                        model.SetY1((int)y4);
+                      }
 	          }
 	          if(e.getSource() == zoomOutB) {
 	            // TODO:
 	            // ZOOM OUT -TOIMINTO
 	            // MUUTA KOORDINAATTEJA, HAE KARTTAKUVA PALVELIMELTA JA Pï¿½IVITï¿½ KUVA
+                    
+                      int x0 = model.GetX();
+                      int x1 = model.GetWidth();
+                      int y0 = model.GetY();
+                      int y1 = model.GetHeight();
+                      
+                      // lasketaan laatikon uudet nurkat edellisten arvojen perusteella
+                      double x3 = 1.20711*x0 - 0.207107*x1;
+                      double y3 = 1.20711*y0 - 0.207107*y1;
+                      double x4 = 1.20711*x1 - 0.207107*x0;
+                      double y4 = 1.20711*y1 - 0.207107*y0;
+                      
+                      // Lasketaan kuinka suuri virhe sivujen suhteessa on.
+                      double yError = (x4-x3)-2*(y4-y3);
+                     
+                      // korjataan virhettÃ¤
+                      y3-=yError/2;
+                      y4+=yError/2;
+                      
+                      model.SetX((int)x3);
+                      model.SetY((int)y3);
+                      model.SetX1((int)x4);
+                      model.SetY1((int)y4);
 	          }
-		  }
+                  
+                  try
+                  {
+                       // pÃ¤ivitetÃ¤Ã¤n kuva
+                       updateImage();
+                  }
+                  catch(Exception ex) { ex.printStackTrace(); }
+                  }
+                  
+                  // Metodi, joka laskee paljonko karttaa liikutettaessa
+                  // liikutaan
+                  private int GetIncrement(int a0, int a1)
+                  {
+                      // liikutetaan kuvaa 10% sen leveydestÃ¤
+                      int inc = (int)(0.1*(a1-a0));
+                      
+                      // Jos liikuman mÃ¤Ã¤rÃ¤ on pienempi kuin 1 liikutaan kuitenkin
+                      // yhden verran
+                      return inc>0?inc:1;
+                  }
 
       }
      
@@ -145,10 +248,9 @@ import java.net.*;
         public String getName() { return name; }
       }
      
-      // Tarkastetaan mitkä karttakerrokset on valittu,
-      // tehdään uudesta karttakuvasta pyyntö palvelimelle ja päivitetään kuva
+      // Tarkastetaan mitkÃ¤ karttakerrokset on valittu,
+      // tehdï¿½ï¿½n uudesta karttakuvasta pyyntï¿½ palvelimelle ja pï¿½ivitetï¿½ï¿½n kuva
       public void updateImage() throws Exception {
-        String s = "";
      
         // Tutkitaan, mitkï¿½ valintalaatikot on valittu, ja
         // kerï¿½tï¿½ï¿½n s:ï¿½ï¿½n pilkulla erotettu lista valittujen kerrosten
@@ -156,20 +258,51 @@ import java.net.*;
         Component[] components = leftPanel.getComponents();
         for(Component com:components) {
             if(com instanceof LayerCheckBox)
-              if(((LayerCheckBox)com).isSelected()) s = s + com.getName() + ",";
+              if(((LayerCheckBox)com).isSelected()) 
+                  model.AddLayer(com.getName());
+              else
+                  model.RemoveLayer(com.getName());
         }
-        if (s.endsWith(",")) s = s.substring(0, s.length() - 1);
-        	System.out.println(s);
         
+        /*
         String url = "http://demo.mapserver.org/cgi-bin/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&BBOX=-180,-90,180,90&SRS=EPSG:4326&WIDTH=953&HEIGHT=480&LAYERS="+s+"&STYLES=&FORMAT=image/png&TRANSPARENT=true";	
         System.out.println(url);
+        */
         // TODO:
-        // getMap-KYSELYN URL-OSOITTEEN MUODOSTAMINEN JA KUVAN PÄIVITYS ERILLISESSÄ SÄIKEESSÄ
+        // getMap-KYSELYN URL-OSOITTEEN MUODOSTAMINEN JA KUVAN Pï¿½IVITYS ERILLISESSï¿½ Sï¿½IKEESSï¿½
         
-        MapURL = url;
-        
+        loadImage();
         imageLabel.setIcon(new ImageIcon(new URL(MapURL)));
 
       }
      
+      // Lataa kuvan mallin perusteella  asynkronisesti
+      private void loadImage()
+      {
+          // luodaan kuvan lataaja, joka sitoo mallin, nÃ¤kymÃ¤Ã¤n ja muodostaa
+          // siitÃ¤ url:n, jolla haetaan kuva.
+          Runnable loader= new Runnable(){
+            @Override
+            public void run(){
+                MapURL = view.Bind(model);
+                System.out.println(MapURL);
+                try {
+                    final ImageIcon map = new ImageIcon(new URL(MapURL));
+                
+                    // PÃ¤ivitetÃ¤Ã¤n UI-elementti, kunhan kuva ollaan saatu haettua.
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageLabel.setIcon(map);
+                        }
+                    });
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+          };
+          
+          // Haetaan kuva ja sidotaan se GUI:hin
+          new Thread(loader).start();
+      }
     } // MapDialog

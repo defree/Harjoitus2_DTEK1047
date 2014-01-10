@@ -1,9 +1,9 @@
 package mapviewer;
 /**
- * Pääluokka. Määritetään mistä URLista haetaan kartan XML ja aloituskartta.
+ * Pï¿½ï¿½luokka. Mï¿½ï¿½ritetï¿½ï¿½n mistï¿½ URLista haetaan kartan XML ja aloituskartta.
  * Haetaan kartan layer-tiedot XML-parserista getMapLayers-functiolla.
  * Muunnetaan arraylist arrayksi.
- * Tehdään uusi MapDialog, joka piirtää kartankatseluikkunan.
+ * Tehdï¿½ï¿½n uusi MapDialog, joka piirtï¿½ï¿½ kartankatseluikkunan.
  */
 
 import java.util.List;
